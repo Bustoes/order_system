@@ -1,8 +1,12 @@
 server:
   port: 9900
+
+
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://rm-bp11gq9qvb70q0179ko.mysql.rds.aliyuncs.com:3306/ordersystem?SetTimezone=CTS
-    username: root
-    password: OrderSys_
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://rm-bp11gq9qvb70q0179ko.mysql.rds.aliyuncs.com:3306/ordersystem?SetTimezone=CTS
+      username: root
+      password: OrderSys_
+
