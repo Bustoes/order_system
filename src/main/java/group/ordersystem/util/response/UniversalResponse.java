@@ -11,6 +11,7 @@ public class UniversalResponse<T> {
     public UniversalResponse(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
+        this.data = null;
     }
 
     public UniversalResponse(Integer code, String msg, T data) {

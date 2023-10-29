@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Menu_Order {
-    private int     order_id;
-    private int     meal_id;
+    private Integer     order_id;
+    private Integer     meal_id;
 }

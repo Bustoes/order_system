@@ -10,3 +10,8 @@ spring:
       username: root
       password: OrderSys_
 
+logging:
+  level:
+    group:
+      ordersystem:
+        mapper: debug
