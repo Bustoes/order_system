@@ -2,8 +2,8 @@ package group.ordersystem.controller;
 
 import group.ordersystem.pojo.form.LoginForm;
 import group.ordersystem.pojo.form.RegisterForm;
-import group.ordersystem.pojo.form.TokenRes;
-import group.ordersystem.service.UserService;
+import group.ordersystem.pojo.res.TokenRes;
+import group.ordersystem.service.CustomerService;
 import group.ordersystem.util.response.UniversalResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 @RequestMapping("/")
 public class CommonController {
     @Resource
-    private UserService userService;
+    private CustomerService customerService;
 
     @GetMapping
     @ResponseBody
@@ -24,12 +24,12 @@ public class CommonController {
     @PostMapping("/login")
     @ResponseBody
     public UniversalResponse<TokenRes> login(@RequestBody LoginForm loginForm) {
-        return userService.login(loginForm.getAccount(), loginForm.getPassword());
+        return customerService.login(loginForm.getAccount(), loginForm.getPassword());
     }
 
     @PostMapping("/register")
     @ResponseBody
     public UniversalResponse<?> register(@RequestBody RegisterForm registerForm) {
-        return userService.register(registerForm);
+        return customerService.register(registerForm);
     }
 }

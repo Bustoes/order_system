@@ -1,4 +1,4 @@
-package group.ordersystem.pojo.form;
+package group.ordersystem.pojo.res;
 
 import lombok.Data;
 

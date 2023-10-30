@@ -2,9 +2,9 @@ package group.ordersystem.service.impl;
 
 import group.ordersystem.mapper.UserMapper;
 import group.ordersystem.pojo.User;
-import group.ordersystem.pojo.form.TokenRes;
+import group.ordersystem.pojo.res.TokenRes;
 import group.ordersystem.pojo.form.RegisterForm;
-import group.ordersystem.service.UserService;
+import group.ordersystem.service.CustomerService;
 import group.ordersystem.util.JWTUtil;
 import group.ordersystem.util.enums.ResponseEnum;
 import group.ordersystem.util.response.ResponseException;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class CustomerServiceImpl implements CustomerService {
     @Resource
     private UserMapper userMapper;
 
