@@ -26,6 +26,10 @@ public enum ResponseEnum {
      */
     SERVER_BUSY(5000, "服务器繁忙，请稍后重试");
 
+    /**
+     *
+     */
+
 
     private final Integer code;
     private final String msg;
@@ -34,6 +38,8 @@ public enum ResponseEnum {
         this.code = code;
         this.msg = msg;
     }
+
+
 
     public Integer getCode() {
         return code;

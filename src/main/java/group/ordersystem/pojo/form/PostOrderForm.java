@@ -5,8 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class OrderForm {
-    private Integer         customer_id;
+public class PostOrderForm {
     private String          destination;
     private Integer         order_price;
     private List<Integer>   meals;

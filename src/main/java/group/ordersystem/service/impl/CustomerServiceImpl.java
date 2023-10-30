@@ -1,11 +1,18 @@
 package group.ordersystem.service.impl;
 
+import group.ordersystem.mapper.MenuMapper;
+import group.ordersystem.mapper.OrderMapper;
 import group.ordersystem.mapper.UserMapper;
+import group.ordersystem.pojo.Menu;
+import group.ordersystem.pojo.Order;
 import group.ordersystem.pojo.User;
+import group.ordersystem.pojo.form.PostOrderForm;
+import group.ordersystem.pojo.res.GetOrdersRes;
 import group.ordersystem.pojo.res.TokenRes;
 import group.ordersystem.pojo.form.RegisterForm;
 import group.ordersystem.service.CustomerService;
 import group.ordersystem.util.JWTUtil;
+import group.ordersystem.util.enums.OrderStatusEnum;
 import group.ordersystem.util.enums.ResponseEnum;
 import group.ordersystem.util.response.ResponseException;
 import group.ordersystem.util.response.UniversalResponse;
@@ -13,15 +20,22 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private OrderMapper orderMapper;
+    @Resource
+    private MenuMapper menuMapper;
 
     /**
      * 用户登录
-     * @param account 账户名称
+     *
+     * @param account  账户名称
      * @param password 账户密码
      * @return
      */
@@ -43,6 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     /**
      * 用户注册
+     *
      * @param registerForm
      * @return
      */
@@ -66,6 +81,67 @@ public class CustomerServiceImpl implements CustomerService {
 
         userMapper.insertUser(newUser);
 
+        return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg());
+    }
+
+    @Override
+    public UniversalResponse<List<Menu>> getMenus() {
+        return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), menuMapper.getMenu());
+    }
+
+    @Override
+    public UniversalResponse<List<GetOrdersRes>> getOrder() {
+        User user = JWTUtil.getCurrentUser();
+        //数据库查询到orders表中的所有订单数据
+        List<Order> orders = orderMapper.getOrdersByUserId(user.getUser_id());
+        //返回值类型的变量
+        List<GetOrdersRes> ordersResList = new ArrayList<>();
+        //往返回值类型的变量里添加数据
+        for (Order o : orders) {
+            GetOrdersRes ordersRes = new GetOrdersRes();
+            Integer order_id = o.getOrder_id();
+            //通过orderid查询该订单菜品
+            List<Menu> menu = orderMapper.getMenusByOrderId(order_id);
+            //输入数据
+            ordersRes.setOrder_id(o.getOrder_id());
+            ordersRes.setOrder_comment(o.getOrder_comment());
+            ordersRes.setOrder_price(o.getOrder_price());
+            ordersRes.setDestination(o.getDestination());
+            ordersRes.setStatus(o.getStatus());
+            ordersRes.setDeliver_id(o.getDeliver_id());
+            ordersRes.setDeliver_time(o.getDeliver_time());
+
+            ordersRes.setMenus(menu);
+
+            ordersResList.add(ordersRes);
+        }
+
+        return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), ordersResList);
+    }
+
+    @Override
+    public UniversalResponse<?> insertOrder(PostOrderForm postOrderForm) {
+
+        //加载postOderForm对象数据
+        Integer status = OrderStatusEnum.CREATED.getCode();
+        Integer customer_id = JWTUtil.getCurrentUser().getUser_id();
+        String destination = postOrderForm.getDestination();
+        Integer order_price = postOrderForm.getOrder_price();
+        List<Integer> meals = postOrderForm.getMeals();
+        //判断地址是否为空
+        if (destination == null) {
+            throw new ResponseException(ResponseEnum.PARAM_IS_BLANK.getCode(), ResponseEnum.PARAM_IS_BLANK.getMsg());
+        }
+
+        //添加订单信息（除订单中的菜品信息）
+        orderMapper.insertOrder(status, customer_id, destination, order_price);
+        //找到刚添加订单信息的主键号
+        Integer last_order = orderMapper.getLastOrderByUserId(customer_id);
+        //添加该订单菜品信息
+        for (Integer i : meals) {
+            orderMapper.insertMealsInOrder(last_order, i);
+        }
+        //成功
         return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg());
     }
 }
