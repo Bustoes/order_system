@@ -14,6 +14,6 @@ public interface MenuMapper {
      * @return 全部菜单
      */
     @Select("select * from menu")
-    List<Menu> getMenu();
+    List<Menu> selectMenu();
 
 }

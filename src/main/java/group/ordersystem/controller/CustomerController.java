@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/customer")
 public class CustomerController {
     @Resource
     private CustomerService customerService;
@@ -20,10 +20,20 @@ public class CustomerController {
      * 查询所有菜品
      * @return 返回菜品列表
      */
-    @GetMapping("/menus")
+    @GetMapping("/menu")
     @ResponseBody
     public UniversalResponse<List<Menu>> getMenus() {
-    return customerService.getMenus();
+    return customerService.getMenu();
+    }
+
+    /**
+     * 根据用户查询其订单信息
+     * @return 返回该用户的订单列表
+     */
+    @GetMapping("/order")
+    @ResponseBody
+    public UniversalResponse<List<GetOrdersRes>> getOrders(){
+        return customerService.getOrder();
     }
 
     /**
@@ -35,15 +45,5 @@ public class CustomerController {
     @ResponseBody
     public UniversalResponse<?> postOrder(@RequestBody PostOrderForm postOrderForm) {
         return customerService.insertOrder(postOrderForm);
-    }
-
-    /**
-     * 根据用户查询其订单信息
-     * @return 返回该用户的订单列表
-     */
-    @GetMapping("/order")
-    @ResponseBody
-    public UniversalResponse<List<GetOrdersRes>> getOrders(){
-        return customerService.getOrder();
     }
 }

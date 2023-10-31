@@ -14,7 +14,7 @@ public interface CustomerService {
 
     UniversalResponse<?> register(RegisterForm registerForm);
 
-    UniversalResponse<List<Menu>> getMenus();
+    UniversalResponse<List<Menu>> getMenu();
 
     UniversalResponse<List<GetOrdersRes>> getOrder();
 
