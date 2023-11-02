@@ -112,7 +112,7 @@ public class CustomerServiceImpl implements CustomerService {
             GetOrdersRes ordersRes = new GetOrdersRes();
             Integer order_id = o.getOrder_id();
             //通过order_id查询该订单菜品
-            List<Menu> menu = orderMapper.getMenusByOrderId(order_id);
+            List<Menu> menu = menuMapper.getMenusByOrderId(order_id);
             //输入数据
             ordersRes.setOrder_id(o.getOrder_id());
             ordersRes.setOrder_comment(o.getOrder_comment());
@@ -137,17 +137,22 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     public UniversalResponse<?> insertOrder(PostOrderForm postOrderForm) {
-
         //加载postOderForm对象数据
         Integer status = OrderStatusEnum.CREATED.getCode();
         Integer customer_id = JWTUtil.getCurrentUser().getUser_id();
         String destination = postOrderForm.getDestination();
-        Integer order_price = postOrderForm.getOrder_price();   // TODO:需不需要从前端获取总价格
+        Integer order_price = 0;
         List<Integer> meals = postOrderForm.getMeals();
         //判断地址是否为空
         if (destination == null) {
             throw new ResponseException(ResponseEnum.PARAM_IS_BLANK.getCode(), ResponseEnum.PARAM_IS_BLANK.getMsg());
         }
+
+        // 从数据库中取出菜品价格
+        for (Integer meal_id : meals) {
+            order_price += menuMapper.getMealPriceByMealId(meal_id);
+        }
+
         Orders newOrders = new Orders(status, customer_id, destination, order_price);
         //添加订单信息（除订单中的菜品信息）
         orderMapper.insertOrderDB(newOrders);
@@ -155,7 +160,7 @@ public class CustomerServiceImpl implements CustomerService {
         Integer last_order = newOrders.getOrder_id();
         //添加该订单菜品信息
         for (Integer i : meals) {
-            orderMapper.insertMealsInOrder(last_order, i);
+            menuOrderMapper.insertMealsInOrder(last_order, i);
         }
         //成功
         return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg());
