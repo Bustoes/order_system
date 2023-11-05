@@ -11,8 +11,7 @@ public class JWTConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor())
-                .addPathPatterns("/**")     // 这里可以指定拦截的路径，/** 表示拦截所有路径
-                .excludePathPatterns("/login", "/register");
+                .addPathPatterns("/**");    // 这里可以指定拦截的路径，/** 表示拦截所有路径
 
     }
 

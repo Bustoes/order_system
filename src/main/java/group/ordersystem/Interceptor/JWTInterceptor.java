@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import group.ordersystem.annotation.JWTPass;
 import group.ordersystem.mapper.UserMapper;
 import group.ordersystem.pojo.User;
 import group.ordersystem.util.JWTUtil;
@@ -11,6 +12,7 @@ import group.ordersystem.util.enums.ResponseEnum;
 import group.ordersystem.util.response.ResponseException;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,6 +30,17 @@ public class JWTInterceptor implements HandlerInterceptor {
             // 之前一堆bug就是因为预检机制
             System.out.println("OPTIONS放行");
             return true;
+        }
+
+        // 检查handler是否是HandlerMethod的实例
+        if (handler instanceof HandlerMethod) {
+            // 将handler强制转换为HandlerMethod
+            // 这样可以访问请求处理程序的详情信息
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            // 检验是否有注解
+            if (handlerMethod.hasMethodAnnotation(JWTPass.class)) {
+                return true;    // 放行
+            }
         }
 
         String token = request.getHeader("token");
