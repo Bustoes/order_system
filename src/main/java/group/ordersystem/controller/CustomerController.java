@@ -19,6 +19,7 @@ public class CustomerController {
     /**
      * 查询所有菜品
      * @return 返回菜品列表
+     * Author fireworkz
      */
     @GetMapping("/menu")
     @ResponseBody
@@ -29,6 +30,7 @@ public class CustomerController {
     /**
      * 根据用户查询其订单信息
      * @return 返回该用户的订单列表
+     * Author fireworkz
      */
     @GetMapping("/order")
     @ResponseBody
@@ -40,6 +42,7 @@ public class CustomerController {
      * 建立订单
      * @param postOrderForm 前端传来的订单数据
      * @return 不返回数据
+     * Author fireworkz
      */
     @PostMapping("/order")
     @ResponseBody
