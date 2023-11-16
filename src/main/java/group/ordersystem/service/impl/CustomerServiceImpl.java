@@ -7,6 +7,7 @@ import group.ordersystem.mapper.UserMapper;
 import group.ordersystem.pojo.Menu;
 import group.ordersystem.pojo.Orders;
 import group.ordersystem.pojo.User;
+import group.ordersystem.pojo.form.CommentForm;
 import group.ordersystem.pojo.form.PostOrderForm;
 import group.ordersystem.pojo.res.GetOrdersRes;
 import group.ordersystem.pojo.res.TokenRes;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -164,5 +166,66 @@ public class CustomerServiceImpl implements CustomerService {
         }
         //成功
         return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg());
+    }
+    /**
+     * 用户修改/添加评论
+     * @param commentForm
+     * @return
+     */
+    @Override
+    public UniversalResponse<?> updateComment(CommentForm commentForm){
+        Integer customer_id = JWTUtil.getCurrentUser().getUser_id();
+        Orders orders = orderMapper.getOrdersByOrderId(commentForm.getOrder_id());
+        //前端传入的需要评论的order与登录的user不匹配
+        if(!Objects.equals(customer_id, orders.getCustomer_id())){
+            return new UniversalResponse<>(ResponseEnum.USER_MATCH_ERROR.getCode(), ResponseEnum.USER_MATCH_ERROR.getMsg());
+        }
+        //如果订单还未送达
+        if(orders.getStatus()<OrderStatusEnum.FINISHED.getCode()){
+            return new UniversalResponse<>(ResponseEnum.ORDER_STATE_ERROR.getCode(), ResponseEnum.ORDER_STATE_ERROR.getMsg());
+        }
+        //字符串长度超过300
+        if(commentForm.getOrder_comment().length()>300){
+            return new UniversalResponse<>(ResponseEnum.PARAM_IS_OVERLONG.getCode(), ResponseEnum.PARAM_IS_OVERLONG.getMsg());
+        }
+        if(orders.getOrder_comment()==null || orders.getOrder_comment().isEmpty()){
+            //如果尚未评论，添加评论，并修改订单状态为已经评论
+            orderMapper.updateOrderComment(commentForm.getOrder_comment(),commentForm.getOrder_id());
+            if(!commentForm.getOrder_comment().isEmpty()){
+                orderMapper.updateOrderStatus(OrderStatusEnum.COMMENTED.getCode(), orders.getOrder_id());
+            }
+
+            return new UniversalResponse<>(ResponseEnum.ADD_COMMENT.getCode(), ResponseEnum.ADD_COMMENT.getMsg());
+        }else {
+            //修改评论
+                //如修改为空，则修改订单状态为还没有评论
+            if (commentForm.getOrder_comment().isEmpty()){
+                orderMapper.updateOrderStatus(OrderStatusEnum.FINISHED.getCode(), orders.getOrder_id());
+            }
+            orderMapper.updateOrderComment(commentForm.getOrder_comment(),commentForm.getOrder_id());
+            return new UniversalResponse<>(ResponseEnum.CHANGE_COMMENT.getCode(), ResponseEnum.CHANGE_COMMENT.getMsg());
+        }
+
+    }
+    /**
+     * 用户删除订单（商家接单前）
+     * @param order_id
+     * @return
+     */
+    @Override
+    public UniversalResponse<?> deleteOrderByCustomer(Integer order_id){
+        Integer customer_id = JWTUtil.getCurrentUser().getUser_id();
+        Orders orders = orderMapper.getOrdersByOrderId(order_id);
+        //前端传入的需要删除的order与登录的user不匹配
+        if(!Objects.equals(customer_id, orders.getCustomer_id())){
+            return new UniversalResponse<>(ResponseEnum.USER_MATCH_ERROR.getCode(), ResponseEnum.USER_MATCH_ERROR.getMsg());
+        }
+        if (Objects.equals(orders.getStatus(), OrderStatusEnum.CREATED.getCode())){
+            menuOrderMapper.deleteMealsInOrder(order_id);
+            orderMapper.deleteOrder(order_id);
+            return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg());
+        }else {
+            return new UniversalResponse<>(ResponseEnum.ORDER_STATE_ERROR.getCode(),ResponseEnum.ORDER_STATE_ERROR.getMsg());
+        }
     }
 }

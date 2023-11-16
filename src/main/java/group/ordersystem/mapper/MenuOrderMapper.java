@@ -1,5 +1,6 @@
 package group.ordersystem.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,4 +13,10 @@ public interface MenuOrderMapper {
      */
     @Insert("insert into menu_order (order_id,meal_id) values (#{order_id},#{meal_id})")
     void insertMealsInOrder(Integer order_id, Integer meal_id);
+    /**
+     * 根据订单id删除关联表项
+     */
+    @Delete("delete from menu_order where order_id=#{order_id}")
+    void deleteMealsInOrder(Integer order_id);
+
 }
