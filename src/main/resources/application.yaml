@@ -6,9 +6,9 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://rm-bp11gq9qvb70q0179ko.mysql.rds.aliyuncs.com:3306/ordersystem?SetTimezone=CTS
+      url: jdbc:mysql://rm-bp1x549zb99mustj1vo.mysql.rds.aliyuncs.com:3306/ordersystem?SetTimezone=CTS
       username: root
-      password: OrderSys_
+      password: H62J$9(iw8L93J_ng2H81
 
 logging:
   level:

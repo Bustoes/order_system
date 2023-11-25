@@ -1,17 +1,13 @@
 package group.ordersystem.mapper;
 
 
-import group.ordersystem.pojo.Menu;
 import group.ordersystem.pojo.Orders;
 import org.apache.ibatis.annotations.*;
-import org.hibernate.criterion.Order;
 
 import java.util.List;
 
 @Mapper
 public interface OrderMapper {
-
-
     /**
      * 根据用户id查询其全部订单
      *
@@ -56,4 +52,41 @@ public interface OrderMapper {
      */
     @Update("update orders set status=#{status} where order_id=#{order_id}")
     void updateOrderStatus(Integer status,Integer order_id);
+
+    /**
+     * 直接查询系统所有订单信息
+     *
+     * @param
+     * @return 查看未被（送餐员）选定的全部订单
+     * Author ruo371
+     */
+    @Select("select * from orders where deliver_id=NULL")
+    List<Orders> getOrdersByNULL();
+
+    /**
+     * 根据送餐员id查询其全部订单
+     *
+     * @param deliver_id 送餐员id
+     * @return 送餐员个人全部订单
+     * Author ruo371
+     */
+    @Select("select * from orders where deliver_id=#{deliver_id}")
+    List<Orders> getOrdersByDelivery(Integer deliver_id);
+    /**
+     * delivery接单
+     *
+     * @param deliver_id
+     * @param order_id
+     * Author ruo371
+     */
+    @Update("UPDATE orders SET deliver_id=#{deliver_id} WHERE order_id = #{order_id}")
+    void updateOrderdelivery_id(Integer deliver_id, Integer order_id);
+    /**
+     * delivery去餐前取消订单
+     *
+     * @param order_id
+     * Author ruo371
+     */
+    @Update("UPDATE orders SET deliver_id=NULL WHERE order_id = #{order_id}")
+    void deleteOrderdelivery_id(Integer order_id);
 }

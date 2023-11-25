@@ -27,6 +27,7 @@ public class CustomerController {
     @GetMapping("/menu")
     @ResponseBody
     public UniversalResponse<List<Menu>> getMenus() {
+
         return customerService.getMenu();
     }
 
@@ -93,6 +94,4 @@ public class CustomerController {
     public UniversalResponse<?> postComment(@RequestBody CommentForm commentForm) {
         return customerService.updateComment(commentForm);
     }
-
-
 }

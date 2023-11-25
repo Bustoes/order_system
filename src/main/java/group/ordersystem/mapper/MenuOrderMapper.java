@@ -18,5 +18,4 @@ public interface MenuOrderMapper {
      */
     @Delete("delete from menu_order where order_id=#{order_id}")
     void deleteMealsInOrder(Integer order_id);
-
 }

@@ -4,7 +4,7 @@ import group.ordersystem.annotation.JWTPass;
 import group.ordersystem.pojo.form.LoginForm;
 import group.ordersystem.pojo.form.RegisterForm;
 import group.ordersystem.pojo.res.TokenRes;
-import group.ordersystem.service.CustomerService;
+import group.ordersystem.service.CommonService;
 import group.ordersystem.util.response.UniversalResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 @RequestMapping("/")
 public class CommonController {
     @Resource
-    private CustomerService customerService;
+    private CommonService commonService;
 
     @GetMapping
     @ResponseBody
@@ -23,17 +23,24 @@ public class CommonController {
         return new UniversalResponse<>(1, "OK");
     }
 
+    /**
+     * 将登录，注册操作封装到CommonService（lmpl）接口之中
+     * 在LoginForm类添加identity,登录需输入身份，用以登录时区分跳转到不同用户界面
+     * @param loginForm
+     * @return
+     * Author ruo371
+     */
     @PostMapping("/login")
     @ResponseBody
     @JWTPass
     public UniversalResponse<TokenRes> login(@RequestBody LoginForm loginForm) {
-        return customerService.login(loginForm.getAccount(), loginForm.getPassword());
+        return commonService.login(loginForm.getAccount(), loginForm.getPassword(), loginForm.getIdentity());
     }
 
     @PostMapping("/register")
     @ResponseBody
     @JWTPass
     public UniversalResponse<?> register(@RequestBody RegisterForm registerForm) {
-        return customerService.register(registerForm);
+        return commonService.register(registerForm);
     }
 }
