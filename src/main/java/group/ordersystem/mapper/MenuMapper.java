@@ -1,8 +1,9 @@
 package group.ordersystem.mapper;
 
 import group.ordersystem.pojo.Menu;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import group.ordersystem.pojo.Menu_Order;
+import group.ordersystem.util.response.UniversalResponse;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -32,4 +33,28 @@ public interface MenuMapper {
      */
     @Select("select meal_price from menu where meal_id = #{meal_id}")
     Integer getMealPriceByMealId(Integer meal_id);
+
+    /**
+     * 根据菜品id更改菜品价格
+     * @param meal_id, new_price
+     * @return
+     */
+    @Update("update menu set meal_price = #{new_price} where meal_id = #{meal_id}")
+    UniversalResponse<?> updateMealPriceByMealId(Integer meal_id, Integer new_price);
+
+    /**
+     * 增加新的菜品信息
+     * @param meal_id, meal_name, meal_price, type
+     * @return
+     */
+    @Insert("insert into menu values (#{meal_id}, #{meal_name}, #{meal_price}, null, #{type}, null)")
+    UniversalResponse<?> insertMealInformation(Integer meal_id, String meal_name, Integer meal_price, String type);
+
+    /**
+     * 根据菜品id删除菜品
+     * @param meal_id
+     * @return
+     */
+    @Delete("delete from menu where meal_id = #{meal_id}")
+    UniversalResponse<?> deleteMealByMealId(Integer meal_id);
 }
