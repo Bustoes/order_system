@@ -32,26 +32,19 @@ public class DeliveryServicelmpl implements DeliveryService {
     @Resource
     private MenuOrderMapper menuOrderMapper;
     /**
-     * 获取系统中未被选定的全部订单
+     * 获取系统中已出餐的全部订单
      * @return
      *
-     */
-    /**
-     * 获取用户的全部订单
-     * @return
      */
     @Override
     public UniversalResponse<List<GetOrdersRes>> getOrder() {
         //数据库查询到orders表中的所有订单数据
-        List<Orders> orders = orderMapper.getOrdersByNULL();
+        List<Orders> orders = orderMapper.getOrdersCooked();
         //返回值类型的变量
         List<GetOrdersRes> ordersResList = new ArrayList<>();
         //往返回值类型的变量里添加数据
         for (Orders o : orders) {
             GetOrdersRes ordersRes = new GetOrdersRes();
-            Integer order_id = o.getOrder_id();
-            //通过order_id查询该订单菜品
-            List<Menu> menu = menuMapper.getMenusByOrderId(order_id);
             //输入数据
             ordersRes.setOrder_id(o.getOrder_id());
             ordersRes.setOrder_comment(o.getOrder_comment());
@@ -60,8 +53,6 @@ public class DeliveryServicelmpl implements DeliveryService {
             ordersRes.setStatus(o.getStatus());
             ordersRes.setDeliver_id(o.getDeliver_id());
             ordersRes.setDeliver_time(o.getDeliver_time());
-
-            ordersRes.setMenus(menu);
 
             ordersResList.add(ordersRes);
         }
@@ -84,9 +75,6 @@ public class DeliveryServicelmpl implements DeliveryService {
         //往返回值类型的变量里添加数据
         for (Orders o : orders) {
             GetOrdersRes ordersRes = new GetOrdersRes();
-            Integer order_id = o.getOrder_id();
-            //通过order_id查询该订单菜品
-            List<Menu> menu = menuMapper.getMenusByOrderId(order_id);
             //输入数据
             ordersRes.setOrder_id(o.getOrder_id());
             ordersRes.setOrder_comment(o.getOrder_comment());
@@ -95,8 +83,6 @@ public class DeliveryServicelmpl implements DeliveryService {
             ordersRes.setStatus(o.getStatus());
             ordersRes.setDeliver_id(o.getDeliver_id());
             ordersRes.setDeliver_time(o.getDeliver_time());
-
-            ordersRes.setMenus(menu);
 
             ordersResList.add(ordersRes);
         }

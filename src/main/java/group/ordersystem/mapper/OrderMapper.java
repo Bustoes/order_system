@@ -60,8 +60,8 @@ public interface OrderMapper {
      * @return 查看未被（送餐员）选定的全部订单
      * Author ruo371
      */
-    @Select("select * from orders where deliver_id=NULL")
-    List<Orders> getOrdersByNULL();
+    @Select("select * from orders where status=2")
+    List<Orders> getOrdersCooked();
 
     /**
      * 根据送餐员id查询其全部订单
