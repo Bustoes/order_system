@@ -44,19 +44,8 @@ public class DeliveryController {
      */
     @PostMapping("/order/{order_id}")
     @ResponseBody
-    public UniversalResponse<?> postOrder1(@PathVariable Integer order_id) {
-        return deliveryService.take_order(order_id);
-    }
-    /**
-     * 取餐
-     *
-     * @return 无
-     * Author ruo371
-     */
-    @PostMapping("/take/{order_id}")
-    @ResponseBody
-    public UniversalResponse<?> postOrder2(@PathVariable Integer order_id) {
-        return deliveryService.take_meal(order_id);
+    public UniversalResponse<?> postOrder(@PathVariable Integer order_id) {
+        return deliveryService.takeOrderAndMeal(order_id);
     }
     /**
      * 订单已送达

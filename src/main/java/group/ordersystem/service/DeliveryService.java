@@ -10,8 +10,7 @@ public interface DeliveryService {
 
     UniversalResponse<List<GetOrdersRes>> getmyOrder();
 
-    UniversalResponse<?> take_order(Integer order_id);
-    UniversalResponse<?> take_meal(Integer order_id);
+    UniversalResponse<?> takeOrderAndMeal(Integer order_id);
     UniversalResponse<?> delivery_meal(Integer order_id);
     UniversalResponse<?> delete_meal(Integer order_id);
 }

@@ -27,6 +27,7 @@ public enum ResponseEnum {
      * 状态错误
      */
     ORDER_STATE_ERROR(3000,"订单状态不匹配"),
+    ORDER_ACCEPTED(3001, "订单已被其他送餐员接收"),
 
     /**
      * 服务器错误

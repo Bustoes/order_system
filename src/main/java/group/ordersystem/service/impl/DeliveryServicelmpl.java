@@ -90,40 +90,22 @@ public class DeliveryServicelmpl implements DeliveryService {
         return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), ordersResList);
     }
     /**
-     * 送餐员接单    必要条件：orders.getStatus()==1
+     * 送餐员接单    必要条件：orders.getStatus()==2
      * @return
      */
     @Override
-    public UniversalResponse<?> take_order(Integer order_id){
+    public UniversalResponse<?> takeOrderAndMeal(Integer order_id){
         Integer deliver_id = JWTUtil.getCurrentUser().getUser_id();
         Orders orders = orderMapper.getOrdersByOrderId(order_id);
         if(orders.getDeliver_id() != null){
-            throw new ResponseException(ResponseEnum.FAILED.getCode(), ResponseEnum.FAILED.getMsg());
-        }
-        if (Objects.equals(orders.getStatus(), OrderStatusEnum.CREATED.getCode())||
-                Objects.equals(orders.getStatus(), OrderStatusEnum.COOKED.getCode())){
-            orderMapper.updateOrderdelivery_id(deliver_id,order_id);
-            return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg());
-        }else {
-            return new UniversalResponse<>(ResponseEnum.ORDER_STATE_ERROR.getCode(),ResponseEnum.ORDER_STATE_ERROR.getMsg());
-        }
-    }
-    /**
-     * 取餐
-     *
-     */
-    @Override
-    public UniversalResponse<?> take_meal(Integer order_id){
-        Integer deliver_id = JWTUtil.getCurrentUser().getUser_id();
-        Orders orders = orderMapper.getOrdersByOrderId(order_id);
-        if(!Objects.equals(deliver_id, orders.getDeliver_id())){
-            return new UniversalResponse<>(ResponseEnum.USER_MATCH_ERROR.getCode(), ResponseEnum.USER_MATCH_ERROR.getMsg());
+            throw new ResponseException(ResponseEnum.ORDER_ACCEPTED.getCode(), ResponseEnum.ORDER_ACCEPTED.getMsg());
         }
         if (Objects.equals(orders.getStatus(), OrderStatusEnum.COOKED.getCode())){
-            orderMapper.updateOrderStatus(OrderStatusEnum.ACCEPTED.getCode(), orders.getOrder_id());
+            orderMapper.updateOrderdelivery_id(deliver_id,order_id);
+            orderMapper.updateOrderStatus(OrderStatusEnum.ACCEPTED.getCode(), order_id);
             return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg());
         }else {
-            return new UniversalResponse<>(ResponseEnum.ORDER_STATE_ERROR.getCode(),ResponseEnum.ORDER_STATE_ERROR.getMsg());
+            throw new ResponseException(ResponseEnum.ORDER_STATE_ERROR.getCode(),ResponseEnum.ORDER_STATE_ERROR.getMsg());
         }
     }
     /**
