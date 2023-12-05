@@ -44,7 +44,7 @@ public class DeliveryController {
      */
     @PostMapping("/order/{order_id}")
     @ResponseBody
-    public UniversalResponse<?> postOrder(@PathVariable Integer order_id) {
+    public UniversalResponse<?> postOrder1(@PathVariable Integer order_id) {
         return deliveryService.takeOrderAndMeal(order_id);
     }
     /**
