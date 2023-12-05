@@ -123,15 +123,15 @@ public class CustomerServiceImpl implements CustomerService {
         Orders orders = orderMapper.getOrdersByOrderId(commentForm.getOrder_id());
         //前端传入的需要评论的order与登录的user不匹配
         if(!Objects.equals(customer_id, orders.getCustomer_id())){
-            return new UniversalResponse<>(ResponseEnum.USER_MATCH_ERROR.getCode(), ResponseEnum.USER_MATCH_ERROR.getMsg());
+            throw new ResponseException(ResponseEnum.USER_MATCH_ERROR.getCode(), ResponseEnum.USER_MATCH_ERROR.getMsg());
         }
         //如果订单还未送达
         if(orders.getStatus()<OrderStatusEnum.FINISHED.getCode()){
-            return new UniversalResponse<>(ResponseEnum.ORDER_STATE_ERROR.getCode(), ResponseEnum.ORDER_STATE_ERROR.getMsg());
+            throw new ResponseException(ResponseEnum.ORDER_STATE_ERROR.getCode(), ResponseEnum.ORDER_STATE_ERROR.getMsg());
         }
         //字符串长度超过300
         if(commentForm.getOrder_comment().length()>300){
-            return new UniversalResponse<>(ResponseEnum.PARAM_IS_OVERLONG.getCode(), ResponseEnum.PARAM_IS_OVERLONG.getMsg());
+            throw new ResponseException(ResponseEnum.PARAM_IS_OVERLONG.getCode(), ResponseEnum.PARAM_IS_OVERLONG.getMsg());
         }
         if(orders.getOrder_comment()==null || orders.getOrder_comment().isEmpty()){
             //如果尚未评论，添加评论，并修改订单状态为已经评论
@@ -163,14 +163,14 @@ public class CustomerServiceImpl implements CustomerService {
         Orders orders = orderMapper.getOrdersByOrderId(order_id);
         //前端传入的需要删除的order与登录的user不匹配
         if(!Objects.equals(customer_id, orders.getCustomer_id())){
-            return new UniversalResponse<>(ResponseEnum.USER_MATCH_ERROR.getCode(), ResponseEnum.USER_MATCH_ERROR.getMsg());
+            throw new ResponseException(ResponseEnum.USER_MATCH_ERROR.getCode(), ResponseEnum.USER_MATCH_ERROR.getMsg());
         }
         if (Objects.equals(orders.getStatus(), OrderStatusEnum.CREATED.getCode())){
             menuOrderMapper.deleteMealsInOrder(order_id);
             orderMapper.deleteOrder(order_id);
             return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg());
         }else {
-            return new UniversalResponse<>(ResponseEnum.ORDER_STATE_ERROR.getCode(),ResponseEnum.ORDER_STATE_ERROR.getMsg());
+            throw new ResponseException(ResponseEnum.ORDER_CANT_DELETE.getCode(),ResponseEnum.ORDER_CANT_DELETE.getMsg());
         }
     }
 }

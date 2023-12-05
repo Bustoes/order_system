@@ -68,7 +68,7 @@ public class CustomerController {
     }
 
     /**
-     * 建立订单
+     * 删除订单
      * 2.3.4.4 顾客删除订单（商家接单前）
      *
      * @param order_id

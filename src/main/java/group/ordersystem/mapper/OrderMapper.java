@@ -81,12 +81,4 @@ public interface OrderMapper {
      */
     @Update("UPDATE orders SET deliver_id=#{deliver_id} WHERE order_id = #{order_id}")
     void updateOrderdelivery_id(Integer deliver_id, Integer order_id);
-    /**
-     * delivery去餐前取消订单
-     *
-     * @param order_id
-     * Author ruo371
-     */
-    @Update("UPDATE orders SET deliver_id=NULL WHERE order_id = #{order_id}")
-    void deleteOrderdelivery_id(Integer order_id);
 }

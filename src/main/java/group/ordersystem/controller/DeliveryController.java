@@ -58,15 +58,4 @@ public class DeliveryController {
     public UniversalResponse<?> postOrder3(@PathVariable Integer order_id) {
         return deliveryService.delivery_meal(order_id);
     }
-    /**
-     * 在去餐前，取消订单
-     *
-     * @return 无
-     * Author ruo371
-     */
-    @PostMapping("/delete/{order_id}")
-    @ResponseBody
-    public UniversalResponse<?> postOrder4(@PathVariable Integer order_id) {
-        return deliveryService.delete_meal(order_id);
-    }
 }

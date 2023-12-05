@@ -12,6 +12,5 @@ public interface DeliveryService {
 
     UniversalResponse<?> takeOrderAndMeal(Integer order_id);
     UniversalResponse<?> delivery_meal(Integer order_id);
-    UniversalResponse<?> delete_meal(Integer order_id);
 }
 

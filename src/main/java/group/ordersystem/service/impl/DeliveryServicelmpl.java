@@ -132,24 +132,4 @@ public class DeliveryServicelmpl implements DeliveryService {
             throw new ResponseException(ResponseEnum.ORDER_STATE_ERROR.getCode(),ResponseEnum.ORDER_STATE_ERROR.getMsg());
         }
     }
-    /**
-     * 取消订单
-     *
-     */
-    @Override
-    public UniversalResponse<?> delete_meal(Integer order_id){
-        Integer deliver_id = JWTUtil.getCurrentUser().getUser_id();
-        Orders orders = orderMapper.getOrdersByOrderId(order_id);
-        if(!Objects.equals(deliver_id, orders.getDeliver_id())){
-            throw new ResponseException(ResponseEnum.USER_MATCH_ERROR.getCode(), ResponseEnum.USER_MATCH_ERROR.getMsg());
-        }
-        if (Objects.equals(orders.getStatus(), OrderStatusEnum.CREATED.getCode())||
-                Objects.equals(orders.getStatus(), OrderStatusEnum.COOKED.getCode())){
-            orderMapper.deleteOrderdelivery_id(order_id);
-            orderMapper.updateOrderStatus(OrderStatusEnum.COOKED.getCode(), order_id);
-            return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg());
-        }else {
-            throw new ResponseException(ResponseEnum.ORDER_STATE_ERROR.getCode(),ResponseEnum.ORDER_STATE_ERROR.getMsg());
-        }
-    }
 }
