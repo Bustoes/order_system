@@ -5,6 +5,7 @@ import group.ordersystem.mapper.MenuOrderMapper;
 import group.ordersystem.mapper.OrderMapper;
 import group.ordersystem.mapper.UserMapper;
 import group.ordersystem.pojo.User;
+import group.ordersystem.pojo.form.LoginForm;
 import group.ordersystem.pojo.form.RegisterForm;
 import group.ordersystem.pojo.res.TokenRes;
 import group.ordersystem.service.CommonService;
@@ -30,27 +31,23 @@ public class CommonServicelmpl implements CommonService {
     /**
      * 用户登录
      *
-     * @param account  账户名称
-     * @param password 账户密码
+     * @param loginForm 登录表单
      * @return
      */
     @Override
-    public UniversalResponse<TokenRes> login(String account, String password,int identity) {
-        User user = userMapper.getUserByAccount(account);
+    public UniversalResponse<TokenRes> login(LoginForm loginForm) {
+        User user = userMapper.getUserByAccount(loginForm.getAccount());
         if (user == null) {
             throw new ResponseException(ResponseEnum.USER_LOGIN_ERROR.getCode(), ResponseEnum.USER_LOGIN_ERROR.getMsg());
         }
-        if (!user.getPassword().equals(password)) {
+        if (!user.getPassword().equals(loginForm.getPassword())) {
             throw new ResponseException(ResponseEnum.USER_LOGIN_ERROR.getCode(), ResponseEnum.USER_LOGIN_ERROR.getMsg());
         }
-        if (user.getIdentity() != identity) {
-            throw new ResponseException(ResponseEnum.USER_LOGIN_ERROR.getCode(), ResponseEnum.USER_LOGIN_ERROR.getMsg());
-            }
-        // 用户名、密码、身份正确
+        // 用户名、密码正确
         // 生成token
         String token;
-        token = JWTUtil.createToken(account);
-        return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), new TokenRes(token));
+        token = JWTUtil.createToken(loginForm.getAccount());
+        return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), new TokenRes(token, user.getIdentity()));
     }
 
     /**

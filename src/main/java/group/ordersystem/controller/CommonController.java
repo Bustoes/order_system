@@ -25,8 +25,8 @@ public class CommonController {
 
     /**
      * 将登录，注册操作封装到CommonService（lmpl）接口之中
-     * 在LoginForm类添加identity,登录需输入身份，用以登录时区分跳转到不同用户界面
-     * @param loginForm
+     * 在登录后，将token和identity传给前端，用以登录时区分跳转到不同用户界面
+     * @param loginForm 登录表单
      * @return
      * Author ruo371
      */
@@ -34,7 +34,7 @@ public class CommonController {
     @ResponseBody
     @JWTPass
     public UniversalResponse<TokenRes> login(@RequestBody LoginForm loginForm) {
-        return commonService.login(loginForm.getAccount(), loginForm.getPassword(), loginForm.getIdentity());
+        return commonService.login(loginForm);
     }
 
     @PostMapping("/register")
