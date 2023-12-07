@@ -64,7 +64,13 @@ public class StaffController {
 
     @GetMapping("/order")
     @ResponseBody
-    public UniversalResponse<List<Menu_Order>> getMenuOrder(){
+    public UniversalResponse<List<GetOrderForm>> getMenuOrder(){
         return staffService.getMenuOrder();
+    }
+
+    @GetMapping("/accept")
+    @ResponseBody
+    public UniversalResponse<List<Orders>> acceptOrder(){
+        return staffService.acceptOrder();
     }
 }

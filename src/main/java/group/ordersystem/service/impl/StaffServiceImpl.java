@@ -19,8 +19,11 @@ import group.ordersystem.util.response.UniversalResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Objects;
 
 @Service
@@ -55,17 +58,25 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public UniversalResponse<List<Menu_Order>> getMenuOrder() {
-        return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), menuOrderMapper.selectMenuOrder());
+    public UniversalResponse<List<GetOrderForm>> getMenuOrder() {
+        List<GetOrderForm> orderFormsList = new ArrayList<>();
+        List<Menu_Order> menuOrderList = menuOrderMapper.selectMenuOrder();
+        for(int i=1; i<=15; i++){
+            GetOrderForm orderForm = new GetOrderForm();
+            orderForm.setMeal_id(i);
+            orderForm.setNum_order(0);
+            orderFormsList.add(orderForm);
+        }
+        for (Menu_Order o : menuOrderList){
+            Integer Num_order = orderFormsList.get(o.getMeal_id()-1).getNum_order();
+            orderFormsList.get(o.getMeal_id()-1).setNum_order(Num_order+1);
+        }
+        return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), orderFormsList);
     }
 
-//    @Override
-//    public UniversalResponse<?> acceptOrder() {
-//        return null;
-//    }
-//
-//    @Override
-//    public UniversalResponse<?> requestDelivery() {
-//        return null;
-//    }
+    @Override
+    public UniversalResponse<List<Orders>> acceptOrder() {
+        orderMapper.acceptOrder();
+        return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), orderMapper.selectOrder());
+    }
 }

@@ -1,6 +1,7 @@
 package group.ordersystem.mapper;
 
 import group.ordersystem.pojo.Menu_Order;
+import group.ordersystem.pojo.Orders;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

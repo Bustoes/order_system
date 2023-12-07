@@ -2,6 +2,7 @@ package group.ordersystem.service;
 
 import group.ordersystem.pojo.Menu;
 import group.ordersystem.pojo.Menu_Order;
+import group.ordersystem.pojo.Orders;
 import group.ordersystem.pojo.form.*;
 import group.ordersystem.pojo.res.GetOrdersRes;
 import group.ordersystem.util.response.UniversalResponse;
@@ -17,9 +18,7 @@ public interface StaffService {
 
     UniversalResponse<?> deleteMeal(DeleteMealForm deleteMealForm);
 
-    UniversalResponse<List<Menu_Order>> getMenuOrder();
+    UniversalResponse<List<GetOrderForm>> getMenuOrder();
 
-//    UniversalResponse<?> acceptOrder();
-//
-//    UniversalResponse<?> requestDelivery();
+    UniversalResponse<List<Orders>> acceptOrder();
 }
