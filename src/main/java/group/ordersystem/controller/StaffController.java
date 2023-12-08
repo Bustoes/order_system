@@ -2,6 +2,7 @@ package group.ordersystem.controller;
 
 import group.ordersystem.pojo.*;
 import group.ordersystem.pojo.form.*;
+import group.ordersystem.pojo.res.*;
 import group.ordersystem.pojo.res.OrderSellRes;
 import group.ordersystem.service.StaffService;
 import group.ordersystem.util.response.UniversalResponse;
@@ -68,9 +69,9 @@ public class StaffController {
         return staffService.getMenuOrder();
     }
 
-    @GetMapping("/accept")
+    @PostMapping("/accept")
     @ResponseBody
-    public UniversalResponse<List<Orders>> acceptOrder(){
-        return staffService.acceptOrder();
+    public UniversalResponse<List<Orders>> acceptOrder(@RequestBody UpdateStatusForm updateStatusForm){
+        return staffService.acceptOrder(updateStatusForm);
     }
 }

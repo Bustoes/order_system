@@ -8,6 +8,7 @@ import group.ordersystem.pojo.Menu;
 import group.ordersystem.pojo.Menu_Order;
 import group.ordersystem.pojo.Orders;
 import group.ordersystem.pojo.form.*;
+import group.ordersystem.pojo.res.*;
 import group.ordersystem.pojo.res.OrderSellRes;
 import group.ordersystem.service.StaffService;
 import group.ordersystem.util.enums.ResponseEnum;
@@ -67,8 +68,8 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public UniversalResponse<List<Orders>> acceptOrder() {
-        orderMapper.acceptOrder();
+    public UniversalResponse<List<Orders>> acceptOrder(UpdateStatusForm updateStatusForm) {
+        orderMapper.acceptOrder(updateStatusForm.getOrder_id());
         return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), orderMapper.selectOrder());
     }
 }

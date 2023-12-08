@@ -85,6 +85,6 @@ public interface OrderMapper {
     @Select("select * from orders")
     List<Orders> selectOrder();
 
-    @Update("UPDATE orders SET status=2 WHERE status=1")
-    void acceptOrder();
+    @Update("UPDATE orders SET status=2 WHERE status=1 and order_id=#{order_id}")
+    void acceptOrder(Integer order_id);
 }
