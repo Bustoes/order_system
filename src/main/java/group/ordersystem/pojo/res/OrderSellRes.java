@@ -1,8 +1,8 @@
-package group.ordersystem.pojo.form;
+package group.ordersystem.pojo.res;
 import lombok.Data;
 
 @Data
-public class GetOrderForm {
+public class OrderSellRes {
     private Integer meal_id;
     private Integer num_order;
 }

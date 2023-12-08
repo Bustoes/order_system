@@ -2,7 +2,7 @@ package group.ordersystem.controller;
 
 import group.ordersystem.pojo.*;
 import group.ordersystem.pojo.form.*;
-import group.ordersystem.pojo.res.GetOrdersRes;
+import group.ordersystem.pojo.res.OrderSellRes;
 import group.ordersystem.service.StaffService;
 import group.ordersystem.util.response.UniversalResponse;
 import org.springframework.web.bind.annotation.*;
@@ -64,7 +64,7 @@ public class StaffController {
 
     @GetMapping("/order")
     @ResponseBody
-    public UniversalResponse<List<GetOrderForm>> getMenuOrder(){
+    public UniversalResponse<List<OrderSellRes>> getMenuOrder(){
         return staffService.getMenuOrder();
     }
 
