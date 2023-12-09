@@ -1,6 +1,7 @@
 package group.ordersystem.service;
 
 import group.ordersystem.pojo.Menu;
+import group.ordersystem.pojo.Menu_Order;
 import group.ordersystem.pojo.Orders;
 import group.ordersystem.pojo.form.*;
 import group.ordersystem.pojo.res.*;
@@ -17,8 +18,7 @@ public interface StaffService {
     UniversalResponse<?> insertMeal(InsertMealForm insertMealForm);
 
     UniversalResponse<?> deleteMeal(DeleteMealForm deleteMealForm);
-
-    UniversalResponse<List<OrderSellRes>> getMenuOrder();
-
+    UniversalResponse<List<OrderSellRes>> getMenuSale();
+    UniversalResponse<List<Menu_Order>> getMenuOrder();
     UniversalResponse<List<Orders>> acceptOrder(UpdateStatusForm updateStatusForm);
 }

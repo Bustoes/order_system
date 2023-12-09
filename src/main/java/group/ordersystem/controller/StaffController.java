@@ -63,9 +63,15 @@ public class StaffController {
         return staffService.deleteMeal(deleteMealForm);
     }
 
+    @GetMapping("/sale")
+    @ResponseBody
+    public UniversalResponse<List<OrderSellRes>> getMenuSale(){
+        return staffService.getMenuSale();
+    }
+
     @GetMapping("/order")
     @ResponseBody
-    public UniversalResponse<List<OrderSellRes>> getMenuOrder(){
+    public UniversalResponse<List<Menu_Order>> getMenuOrder(){
         return staffService.getMenuOrder();
     }
 

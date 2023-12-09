@@ -51,7 +51,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public UniversalResponse<List<OrderSellRes>> getMenuOrder() {
+    public UniversalResponse<List<OrderSellRes>> getMenuSale() {
         List<OrderSellRes> orderFormsList = new ArrayList<>();
         List<Menu_Order> menuOrderList = menuOrderMapper.selectMenuOrder();
         for(int i=1; i<=15; i++){
@@ -65,6 +65,11 @@ public class StaffServiceImpl implements StaffService {
             orderFormsList.get(o.getMeal_id()-1).setNum_order(Num_order+1);
         }
         return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), orderFormsList);
+    }
+
+    @Override
+    public UniversalResponse<List<Menu_Order>> getMenuOrder(){
+        return new UniversalResponse<>(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), menuOrderMapper.selectMenuOrder());
     }
 
     @Override
