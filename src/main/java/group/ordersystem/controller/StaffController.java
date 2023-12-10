@@ -2,7 +2,7 @@ package group.ordersystem.controller;
 
 import group.ordersystem.pojo.*;
 import group.ordersystem.pojo.form.*;
-import group.ordersystem.pojo.res.*;
+import group.ordersystem.pojo.res.GetOrdersWithDRes;
 import group.ordersystem.pojo.res.OrderSellRes;
 import group.ordersystem.service.StaffService;
 import group.ordersystem.util.response.UniversalResponse;
@@ -63,6 +63,10 @@ public class StaffController {
         return staffService.deleteMeal(deleteMealForm);
     }
 
+    /**
+     * 菜品销售情况
+     * @return
+     */
     @GetMapping("/sale")
     @ResponseBody
     public UniversalResponse<List<OrderSellRes>> getMenuSale(){
@@ -71,13 +75,13 @@ public class StaffController {
 
     @GetMapping("/order")
     @ResponseBody
-    public UniversalResponse<List<Menu_Order>> getMenuOrder(){
+    public UniversalResponse<List<GetOrdersWithDRes>> getMenuOrder(){
         return staffService.getMenuOrder();
     }
 
     @PostMapping("/accept")
     @ResponseBody
-    public UniversalResponse<List<Orders>> acceptOrder(@RequestBody UpdateStatusForm updateStatusForm){
-        return staffService.acceptOrder(updateStatusForm);
+    public UniversalResponse<?> acceptOrder(@RequestBody AcceptForm acceptForm){
+        return staffService.acceptOrder(acceptForm);
     }
 }

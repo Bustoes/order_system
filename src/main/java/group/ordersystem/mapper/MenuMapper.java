@@ -40,15 +40,15 @@ public interface MenuMapper {
      * @return
      */
     @Update("update menu set meal_price = #{new_price} where meal_id = #{meal_id}")
-    UniversalResponse<?> updateMealPriceByMealId(Integer meal_id, Integer new_price);
+    void updateMealPriceByMealId(Integer meal_id, Integer new_price);
 
     /**
      * 增加新的菜品信息
-     * @param meal_id, meal_name, meal_price, type
+     * @param meal_name, meal_price, type
      * @return
      */
-    @Insert("insert into menu values (#{meal_id}, #{meal_name}, #{meal_price}, null, #{type}, null)")
-    UniversalResponse<?> insertMealInformation(Integer meal_id, String meal_name, Integer meal_price, String type);
+    @Insert("insert into menu values (null, #{meal_name}, #{meal_price}, #{image_path}, #{type}, null)")
+    void insertMealInformation(String meal_name, Integer meal_price, String type, String image_path);
 
     /**
      * 根据菜品id删除菜品
@@ -56,5 +56,8 @@ public interface MenuMapper {
      * @return
      */
     @Delete("delete from menu where meal_id = #{meal_id}")
-    UniversalResponse<?> deleteMealByMealId(Integer meal_id);
+    void deleteMealByMealId(Integer meal_id);
+
+    @Select("select meal_name from menu where meal_id = #{meal_id}")
+    String getNameByMealId(Integer meal_id);
 }

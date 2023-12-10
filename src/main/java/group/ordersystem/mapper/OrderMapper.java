@@ -83,7 +83,7 @@ public interface OrderMapper {
     void updateOrderdelivery_id(Integer deliver_id, Integer order_id);
 
     @Select("select * from orders")
-    List<Orders> selectOrder();
+    List<Orders> selectOrders();
 
     @Update("UPDATE orders SET status=2 WHERE status=1 and order_id=#{order_id}")
     void acceptOrder(Integer order_id);

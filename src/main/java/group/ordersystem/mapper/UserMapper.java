@@ -16,6 +16,14 @@ public interface UserMapper {
     User getUserByAccount(String account);
 
     /**
+     * 通过id获取用户姓名
+     * @param
+     * @return
+     */
+    @Select("select user_name from user where user_id = #{user_id}")
+    String getUserNameById(Integer user_id);
+
+    /**
      * 添加用户，主键自增
      * @param user
      */

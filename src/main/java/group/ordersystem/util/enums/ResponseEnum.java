@@ -36,6 +36,7 @@ public enum ResponseEnum {
      * 服务器错误
      */
     SERVER_BUSY(5000, "服务器繁忙，请稍后重试"),
+    SERVER_BUSY_SQL(5001, "数据库错误"),
 
     /**
      * 评论修改成功和评论成功（和之前是否为null有关）
